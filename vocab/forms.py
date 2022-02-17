@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from vocab.models import User
+from vocab.models import User, VocabSet
 
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
@@ -27,3 +27,14 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email addres.')
+
+
+class SetForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    words = TextAreaField('Words', validators=[DataRequired()])
+    submit = SubmitField('Create Set')
+
+    def validate_name(self, name):
+        name = VocabSet.query.filter_by(name=name.data).first()
+        if name is not None:
+            raise ValidationError('Please use different name')
