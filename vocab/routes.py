@@ -1,8 +1,8 @@
 from vocab import app
 from vocab import db
-from vocab.models import User
+from vocab.models import User, VocabSet
 from flask import flash, render_template, request, redirect, url_for
-from vocab.forms import LoginForm, RegistrationForm
+from vocab.forms import SetForm, LoginForm, RegistrationForm
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse
 
@@ -37,6 +37,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if current_user.is_authenticated:
@@ -49,3 +50,20 @@ def registration():
         db.session.commit()
         return redirect(url_for('login'))
     return render_template('registration.html', title='Register', form=form)
+
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user=user)
+
+
+@app.route('/create_set', methods=['GET', 'POST'])
+@login_required
+def create_set():
+    form = SetForm()
+    new_set = VocabSet(name=form.name.data, words=form.words.data)
+    db.session.add(new_set)
+    db.session.commit()
+    return render_template('create_set.html', form=form)

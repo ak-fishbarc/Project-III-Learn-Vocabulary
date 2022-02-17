@@ -24,6 +24,12 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
+class VocabSet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+    words = db.Column(db.String(), index=True)
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
