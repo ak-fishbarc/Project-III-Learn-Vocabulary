@@ -56,14 +56,15 @@ def registration():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    wordsets = user.word_sets.all()
+    return render_template('user.html', user=user, wordsets=wordsets)
 
 
 @app.route('/create_set', methods=['GET', 'POST'])
 @login_required
 def create_set():
     form = SetForm()
-    new_set = VocabSet(name=form.name.data, words=form.words.data)
+    new_set = VocabSet(name=form.name.data, words=form.words.data, creator=current_user)
     db.session.add(new_set)
     db.session.commit()
     return render_template('create_set.html', form=form)
