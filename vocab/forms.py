@@ -32,6 +32,7 @@ class RegistrationForm(FlaskForm):
 class SetForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     words = TextAreaField('Words', validators=[DataRequired()])
+    words2 = TextAreaField('Translation', validators=[DataRequired()])
     submit = SubmitField('Create Set')
 
     def validate_name(self, name):

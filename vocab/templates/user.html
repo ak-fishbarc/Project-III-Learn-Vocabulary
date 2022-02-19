@@ -9,10 +9,16 @@
                     <th>Set Name:</th>
                     <th>{{ sets.name }} </th>
                 </tr>
-                    {% if sets.words != None %}
+                    {% if sets.words != None and sets.words2 != None %}
                         <tr>
-                        <td>Words: </td>
+                            <td>Words: </td>
                         {% for word in sets.words.split(',') %}
+                            <td> {{ word }}</td>
+                        {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Translation: </td>
+                        {% for word in sets.words2.split(',') %}
                             <td> {{ word }}</td>
                         {% endfor %}
                         </tr>

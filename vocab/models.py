@@ -29,8 +29,9 @@ class VocabSet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     words = db.Column(db.String(360), index=True)
+    words2 = db.Column(db.String(360), index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return f'Set: {self.words}'
+        return f'{self.name}: {self.words}'
 
