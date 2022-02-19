@@ -2,4 +2,28 @@
 
 {% block content %}
     <h1>User: {{ user.username }}</h1>
+    {% for sets in wordsets %}
+        {% if sets.name != None %}
+            <table>
+                <tr>
+                    <th>Set Name:</th>
+                    <th>{{ sets.name }} </th>
+                </tr>
+                    {% if sets.words != None and sets.words2 != None %}
+                        <tr>
+                            <td>Words: </td>
+                        {% for word in sets.words.split(',') %}
+                            <td> {{ word }}</td>
+                        {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Translation: </td>
+                        {% for word in sets.words2.split(',') %}
+                            <td> {{ word }}</td>
+                        {% endfor %}
+                        </tr>
+                    {% endif %}
+            </table>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

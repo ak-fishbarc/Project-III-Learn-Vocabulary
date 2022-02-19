@@ -56,14 +56,33 @@ def registration():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    wordsets = user.word_sets.all()
+    return render_template('user.html', user=user, wordsets=wordsets)
 
 
 @app.route('/create_set', methods=['GET', 'POST'])
 @login_required
 def create_set():
     form = SetForm()
-    new_set = VocabSet(name=form.name.data, words=form.words.data)
+    new_set = VocabSet(name=form.name.data, words=form.words.data, words2=form.words2.data, creator=current_user)
     db.session.add(new_set)
     db.session.commit()
     return render_template('create_set.html', form=form)
+
+
+@app.route('/memory', methods=['GET', 'POST'])
+@login_required
+def memory():
+    return render_template('memory.html')
+
+
+@app.route('/to_card', methods=['GET', 'POST'])
+@login_required
+def to_card():
+    user = User.query.filter_by(username=current_user.username).first_or_404()
+    wordsets = user.word_sets.all()
+    data = {}
+    for sets in wordsets:
+        if sets.words != None:
+            data[sets.name] = sets.words.split(',')
+    return data

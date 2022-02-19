@@ -32,9 +32,14 @@ class RegistrationForm(FlaskForm):
 class SetForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     words = TextAreaField('Words', validators=[DataRequired()])
+    words2 = TextAreaField('Translation', validators=[DataRequired()])
     submit = SubmitField('Create Set')
 
     def validate_name(self, name):
         name = VocabSet.query.filter_by(name=name.data).first()
         if name is not None:
             raise ValidationError('Please use different name')
+
+    def validate_words(self, words):
+        if len(words) == 0:
+            raise ValidationError('There must be at least one letter !')
