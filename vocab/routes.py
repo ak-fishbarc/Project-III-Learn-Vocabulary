@@ -64,9 +64,11 @@ def user(username):
 @login_required
 def create_set():
     form = SetForm()
-    new_set = VocabSet(name=form.name.data, words=form.words.data, words2=form.words2.data, creator=current_user)
-    db.session.add(new_set)
-    db.session.commit()
+    if form.validate_on_submit():
+        new_set = VocabSet(name=form.name.data, words=form.words.data, words2=form.words2.data, creator=current_user)
+        db.session.add(new_set)
+        db.session.commit()
+        return redirect('index')
     return render_template('create_set.html', form=form)
 
 
@@ -97,5 +99,15 @@ def to_card():
             translation = sets.words2.split(',')
     set = {'words': words, 'translation': translation}
     return set
+
+@app.route('/delete/<setsname>')
+@login_required
+def delete(setsname):
+    user = User.query.filter_by(username=current_user.username).first_or_404()
+    user.word_sets.filter_by(name=setsname).delete()
+    db.session.commit()
+    wordsets = user.word_sets.all()
+    return render_template('user.html', user=user, wordsets=wordsets)
+
 
 

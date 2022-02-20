@@ -39,7 +39,3 @@ class SetForm(FlaskForm):
         name = VocabSet.query.filter_by(name=name.data).first()
         if name is not None:
             raise ValidationError('Please use different name')
-
-    def validate_words(self, words):
-        if len(words) == 0:
-            raise ValidationError('There must be at least one letter !')

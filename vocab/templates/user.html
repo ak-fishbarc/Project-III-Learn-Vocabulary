@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <script>
+        function delete_set(setsname){
+            fetch('http://127.0.0.1:5000/delete/' + setsname)
+            .then(reload => location.reload(true))
+        }
+    </script>
     <h1>User: {{ user.username }}</h1>
     {% for sets in wordsets %}
         {% if sets.name != None %}
@@ -24,6 +30,8 @@
                         </tr>
                     {% endif %}
             </table>
+            <button onclick="delete_set('{{ sets.name }}')">Delete {{ sets.name }}</button>
         {% endif %}
     {% endfor %}
+
 {% endblock %}

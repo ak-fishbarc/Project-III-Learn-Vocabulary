@@ -1,25 +1,30 @@
 var card_text = null
 
-function get_cards(setname){
-  let response = fetch('http://127.0.0.1:5000/to_card')
-  .then(response => response.json())
-  .then(response => card_text = {'translation': response['translation'], 'words': response['words']})
-  }
+        function get_cards(setname){
+            let response = fetch('http://127.0.0.1:5000/to_card')
+            .then(response => response.json())
+            .then(response => card_text = {'translation': response['translation'], 'words': response['words']})
+            }
 
-var counter = 0
-var clicked = 0
-function get_card(){
-  card = document.getElementById('card')
-  if (counter < card_text['translation'].length){
-     if (clicked == 0){
-        card.innerHTML = card_text['translation'][counter]
-        clicked = 1
-        } else {
-           card.innerHTML = card_text['words'][counter]
-           counter += 1
-           clicked = 0
+        var counter = 0
+        var clicked = 0
+        function get_card(){
+            card = document.getElementById('card')
+            card_bg = document.getElementById('card_bg')
+            if (counter < card_text['translation'].length){
+                if (clicked == 0){
+                    card.innerHTML = card_text['translation'][counter]
+                    clicked = 1
+                    card_bg.style.border = 'inset'
+                } else {
+                    card.innerHTML = card_text['words'][counter]
+                    counter += 1
+                    clicked = 0
+                    card_bg.style.border = 'outset'
+                }
+            } else {
+                counter = 0
+                card.innerHTML = 'Card'
+                card_bg.style.border = 'outset'
+            }
         }
-  } else {
-     counter = 0
-     }
-  }
