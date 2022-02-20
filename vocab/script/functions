@@ -1,5 +1,18 @@
-function get_card(){
-    const url = 'https://localhost:5000/to_card';
-    fetch(url);
-    .then( console.log(response.text());
-                  }
+var data = null
+
+        function get_cards(setname){
+
+            response = fetch('http://127.0.0.1:5000/to_card')
+            .then(response => response.json())
+            .then(response => data = response[setname])
+
+            }
+
+        var counter = 0
+
+        function get_card(){
+
+            document.getElementById('card').innerHTML = data[counter]
+            counter += 1
+
+        }
