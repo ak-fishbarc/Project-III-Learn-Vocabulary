@@ -18,8 +18,13 @@
 
         function get_card(){
 
-            document.getElementById('card').innerHTML = data[counter]
-            counter += 1
+           if (counter < data.length-1) {
+               counter += 1
+               }
+           else{
+               counter = 0
+               }
+           document.getElementById('card').innerHTML = data[counter]
 
         }
     </script>
