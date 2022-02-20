@@ -75,6 +75,12 @@ def create_set():
 def memory():
     user = User.query.filter_by(username=current_user.username).first_or_404()
     wordsets = user.word_sets.all()
+    words = {}
+    translation = {}
+    for sets in wordsets:
+        if sets.words is not None and sets.words2 is not None:
+            words[sets.name] = sets.words.split(',')
+            translation[sets.name] = sets.words2.split(',')
     return render_template('memory.html', wordsets=wordsets)
 
 
@@ -83,8 +89,13 @@ def memory():
 def to_card():
     user = User.query.filter_by(username=current_user.username).first_or_404()
     wordsets = user.word_sets.all()
-    data = {}
+    words = {}
+    translation = {}
     for sets in wordsets:
-        if sets.words != None:
-            data[sets.name] = sets.words.split(',')
-    return data
+        if sets.words is not None and sets.words2 is not None:
+            words = sets.words.split(',')
+            translation = sets.words2.split(',')
+    set = {'words': words, 'translation': translation}
+    return set
+
+
