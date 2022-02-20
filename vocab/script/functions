@@ -1,18 +1,25 @@
-var data = null
+var card_text = null
 
-        function get_cards(setname){
+function get_cards(setname){
+  let response = fetch('http://127.0.0.1:5000/to_card')
+  .then(response => response.json())
+  .then(response => card_text = {'translation': response['translation'], 'words': response['words']})
+  }
 
-            response = fetch('http://127.0.0.1:5000/to_card')
-            .then(response => response.json())
-            .then(response => data = response[setname])
-
-            }
-
-        var counter = 0
-
-        function get_card(){
-
-            document.getElementById('card').innerHTML = data[counter]
-            counter += 1
-
+var counter = 0
+var clicked = 0
+function get_card(){
+  card = document.getElementById('card')
+  if (counter < card_text['translation'].length){
+     if (clicked == 0){
+        card.innerHTML = card_text['translation'][counter]
+        clicked = 1
+        } else {
+           card.innerHTML = card_text['words'][counter]
+           counter += 1
+           clicked = 0
         }
+  } else {
+     counter = 0
+     }
+  }
