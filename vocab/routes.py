@@ -73,7 +73,9 @@ def create_set():
 @app.route('/memory', methods=['GET', 'POST'])
 @login_required
 def memory():
-    return render_template('memory.html')
+    user = User.query.filter_by(username=current_user.username).first_or_404()
+    wordsets = user.word_sets.all()
+    return render_template('memory.html', wordsets=wordsets)
 
 
 @app.route('/to_card', methods=['GET', 'POST'])

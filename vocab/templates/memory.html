@@ -4,15 +4,31 @@
     {% block javascript %}
     <script type="text/javascript">
 
-    function get_card(){
+        var data = null
 
-        fetch('http://127.0.0.1:5000/to_card')
-        .then(response => response.text())
-        .then(data => document.getElementById('card').innerHTML=data)
-                  }
+        function get_cards(setname){
 
+            response = fetch('http://127.0.0.1:5000/to_card')
+            .then(response => response.json())
+            .then(response => data = response[setname])
+
+            }
+
+        var counter = 0
+
+        function get_card(){
+
+            document.getElementById('card').innerHTML = data[counter]
+            counter += 1
+
+        }
     </script>
     {% endblock %}
-    <div id='card' onclick="get_card()">Card</div>
+    {% for sets in wordsets %}
+        {% if sets.name != None %}
+            <div id='set' onclick="get_cards('{{ sets.name }}')">{{ sets.name }}</div>
+        {% endif %}
+    {% endfor %}
 
+    <div id="card" onclick="get_card()">Card</div>
 {% endblock %}
