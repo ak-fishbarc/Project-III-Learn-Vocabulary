@@ -37,11 +37,13 @@
 
     </script>
     {% endblock %}
+    <h1>Please select card set:</h1>
     {% for sets in wordsets %}
         {% if sets.name != None %}
             <button id='set' onclick="get_cards('{{ sets.name }}')">{{ sets.name }}</button>
         {% endif %}
     {% endfor %}
+    <div></div><br>
     {% if wordsets != [] %}
         <div id='card_bg' style="background: grey; width: 100px; height: 150px; text-align: center; border-style: outset;" onclick="get_card()">
         <p id="card" style="position: relative; top: 25%; width: 100%;">Card</p></div>
