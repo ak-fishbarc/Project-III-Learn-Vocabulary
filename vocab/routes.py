@@ -2,16 +2,26 @@ from vocab import app
 from vocab import db
 from vocab.models import User, VocabSet
 from flask import flash, render_template, request, redirect, url_for
-from vocab.forms import SetForm, LoginForm, RegistrationForm
+from vocab.forms import SetForm, SearchForSetForm, LoginForm, RegistrationForm
 from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse
 
+""" 
+Search for card sets. In the future it'll allow users to
+check each set, it's contents and author. TO IMPLEMENT:
+Favourite Sets / Like Set.
+Find and follow authors. 
+"""
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    return render_template('index.html', title='Learn Vocabulary')
+    form = SearchForSetForm()
+    if form.validate_on_submit():
+        card_sets = VocabSet.query.all()
+        return render_template('index.html', title='Learn Vocabulary', card_sets=card_sets)
+    return render_template('index.html', title='Learn Vocabulary', form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])

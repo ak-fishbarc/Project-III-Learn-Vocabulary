@@ -39,3 +39,8 @@ class SetForm(FlaskForm):
         name = VocabSet.query.filter_by(name=name.data).first()
         if name is not None:
             raise ValidationError('Please use different name')
+
+
+class SearchForSetForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Search')
